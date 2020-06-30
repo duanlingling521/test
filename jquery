@@ -1,0 +1,77 @@
+$(function () {
+    // 导航栏
+    $(".list li").hover(function () {
+        $(this).css("background", "#0a5894").children("dl").stop().slideDown("").css({ "display": "block", "background": "#0a5894" });
+    },
+        function () {
+            $(this).css("background", "#0b6cb8").children("dl").stop().slideUp("").css("display", "none");
+        });
+    // 图片轮播
+    var index=0;
+    $(".nav a").mousemove(function () {
+        $(this).addClass("current").siblings().removeClass("current");
+        index = $(this).index();
+        $(".lunbo li").eq(index).stop().fadeIn(1000).siblings().stop().fadeOut(1000);
+    });
+    /*设置自动轮播：
+1.获取当前位置序号：自加操作；当超过图片最大序号时序号设置为0
+2.设置下侧顺序按钮及轮播图显示
+*/
+    var time = setInterval(move, 1000);
+    function move() {
+        index++;
+        if (index == 4) {
+            index = 0
+        }
+        $(".nav a").eq(index).addClass("current").siblings().removeClass("current");
+        $(".lunbo li").eq(index).stop().fadeIn(0).siblings().stop().fadeOut(0);
+    };
+    /*当鼠标划入、划出轮播图区域时：
+    1.划入时停止自动轮播
+    2.划出时继续自动轮播
+    */
+    $(".outer").hover(function () {
+        clearInterval(time);
+    },
+        function () {
+            time = setInterval(move, 2000);
+        });
+    /*点击右侧按钮时执行*/
+    $(".right_btn").click(function () {
+        move();
+    });
+    /*点击左侧按钮时执行*/
+    function moveL() {
+        index--;
+        if (index == -1) {
+            index = 3
+        }
+        $(".nav a").eq(index).addClass("current").siblings().removeClass("current");
+        $(".lunbo li").eq(index).stop().fadeIn(0).siblings().stop().fadeOut(0);
+    }
+    $(".left_btn").click(function () {
+        moveL();
+    });
+    // 原生js图片轮播（中间图片）
+    var lis = document.querySelectorAll(".li a");
+      var nav1 = document.querySelector(".nav1");
+  
+      var index = 0;
+      lis[index].style.backgroundColor = "#0b6cb8";
+      for (var i = 0; i < lis.length; i++) {
+        lis[i].num = i;
+        lis[i].onclick = function () {
+              index = this.num;
+              nav1.style.left = -600 * index + "px";
+              setB();
+          }
+      };
+      function setB() {
+          for (var i = 0; i < lis.length; i++) {
+            lis[i].style.backgroundColor = "#333"
+          }
+          lis[index].style.backgroundColor = "#0b6cb8";
+      }
+});
+
+
